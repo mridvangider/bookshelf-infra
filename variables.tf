@@ -18,6 +18,6 @@ variable "infra_kv_name" {
 
 variable "admin_db_passowrd_key_name" {
   type        = string
-  default     = "db-admin-password"
+  default     = "bookshelf-db-admin-password"
   description = "Name of the admin database password key in the key vault"
 }
