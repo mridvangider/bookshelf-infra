@@ -10,6 +10,7 @@ pool: default
 
 steps:
 - task: TerraformTask@5
+  displayName: Run Terraform Init
   inputs:
     provider: 'azurerm'
     command: 'init'
@@ -19,6 +20,7 @@ steps:
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'state.tfstate'
 - task: TerraformTask@5
+  displayName: Run Terraform Plan
   inputs:
     provider: 'azurerm'
     command: 'plan'
