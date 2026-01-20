@@ -28,6 +28,11 @@ steps:
     command: 'plan'
     commandOptions: '-out tfplan'
     environmentServiceNameAzureRM: 'TF Service Principal on Azure DevOps'
+    backendServiceArm: 'TF Service Principal on Azure DevOps'
+    backendAzureRmResourceGroupName: 'infra'
+    backendAzureRmStorageAccountName: 'satfdata'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'state.tfstate'
 - task: TerraformTask@5
   name: terraformApply
   displayName: Run Terraform Apply
@@ -37,3 +42,8 @@ steps:
     command: 'apply'
     commandOptions: 'tfplan'
     environmentServiceNameAzureRM: 'TF Service Principal on Azure DevOps'
+    backendServiceArm: 'TF Service Principal on Azure DevOps'
+    backendAzureRmResourceGroupName: 'infra'
+    backendAzureRmStorageAccountName: 'satfdata'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'state.tfstate'
