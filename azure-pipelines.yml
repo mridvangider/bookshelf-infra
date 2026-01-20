@@ -22,15 +22,13 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    backendServiceArm: 'TF Service Principal on Azure DevOps'
-    backendAzureRmResourceGroupName: 'infra'
-    backendAzureRmStorageAccountName: 'satfdata'
-    backendAzureRmContainerName: 'tfstate'
+    commandOptions: '-out tfplan'
+    environmentServiceNameAzureRM: 'TF Service Principal on Azure DevOps'
 - task: TerraformTask@5
+  displayName: Run Terraform Apply
+  condition: and(succeeded(), eq(variables['terraformPlan.changesPresent'], 'true'))
   inputs:
     provider: 'azurerm'
     command: 'apply'
-    backendServiceArm: 'TF Service Principal on Azure DevOps'
-    backendAzureRmResourceGroupName: 'infra'
-    backendAzureRmStorageAccountName: 'satfdata'
-    backendAzureRmContainerName: 'tfstate'
+    commandOptions: 'tfplan'
+    environmentServiceNameAzureRM: 'TF Service Principal on Azure DevOps'
