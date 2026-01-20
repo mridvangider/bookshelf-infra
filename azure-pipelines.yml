@@ -16,27 +16,19 @@ steps:
     inputs:
       azureSubscription: "tf-sp-on-ado"
       scriptType: bash
-      scriptLocation: inlineScript
+      scriptLocation: scriptPath
       addSpnToEnvironment: true
-      inlineScript: |
-        terraform init
-    displayName: 'Terraform Init'
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: "tf-sp-on-ado"
-      scriptType: bash
-      scriptLocation: inlineScript
-      addSpnToEnvironment: true
-      inlineScript: |
-        terraform plan -out=tfplan
-    displayName: 'Terraform Plan'
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: "tf-sp-on-ado"
-      scriptType: bash
-      scriptLocation: inlineScript
-      addSpnToEnvironment: true
-      inlineScript: |
-        terraform apply tfplan
-    displayName: 'Terraform Apply'
-  
+      scriptPath: $(Build.SourcesDirectory)/make_env.sh
+    displayName: 'Set Environment Variables'
+  - bash: |
+      source build.env && terraform init
+    displayName: Terraform Init
+    name: terraformInit
+  - bash: |
+      source build.env && terraform plan -out out.tfplan
+    displayName: Terraform Plan
+    name: terraformPlan
+  - bash: |
+      source build.env && terraform apply out.tfplan
+    displayName: Terraform Apply
+    name: terraformApply
