@@ -9,31 +9,19 @@ trigger:
 pool: default
 
 steps:
-- task: TerraformTask@5
-  name: TerraformInit
-  displayName: Run Terraform Init
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    backendServiceArm: 'TF Service Principal on Azure DevOps'
-    backendAzureRmResourceGroupName: 'infra'
-    backendAzureRmStorageAccountName: 'satfdata'
-    backendAzureRmContainerName: 'tfstate'
-    backendAzureRmKey: 'state.tfstate'
-- task: TerraformTask@5
-  name: terraformPlan
-  displayName: Run Terraform Plan
-  inputs:
-    provider: 'azurerm'
-    command: 'plan'
-    commandOptions: '-out tfplan'
-    environmentServiceNameAzureRM: 'TF Service Principal on Azure DevOps'
-- task: TerraformTask@5
-  name: terraformApply
-  displayName: Run Terraform Apply
-  # condition: and(succeeded(), eq(terraformPlan.changesPresent, true))
-  inputs:
-    provider: 'azurerm'
-    command: 'apply'
-    commandOptions: 'tfplan'
-    environmentServiceNameAzureRM: 'TF Service Principal on Azure DevOps'
+  - task: TerraformInstaller@1
+    inputs:
+      terraformVersion: latest
+
+  - bash: |
+      terraform init
+    displayName: Terraform Init
+    name: terraformInit
+  - bash: |
+      terraform plan -out out.tfplan
+    displayName: Terraform Plan
+    name: terraformPlan
+  - bash: |
+      terraform apply out.tfplan
+    displayName: Terraform Apply
+    name: terraformApply
