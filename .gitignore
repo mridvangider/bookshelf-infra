@@ -10,3 +10,4 @@ crash.log
 *.backup
 *.env
 *.tfplan
+.terraform.tfstate.lock.info
