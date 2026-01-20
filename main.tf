@@ -15,10 +15,19 @@ resource "random_password" "db_admin_password" {
 
 }
 
-output "db_admin_password" {
-  value       = random_password.db_admin_password
-  description = "Password of the db admin"
-  sensitive   = true
+data "azurerm_resource_group" "infra" {
+  name = var.infra_rg_name
+}
+
+data "azurerm_key_vault" "infra_key_vault" {
+  name                = var.infra_kv_name
+  resource_group_name = data.azurerm_resource_group.infra.name
+}
+
+resource "azurerm_key_vault_secret" "db_admin_password" {
+  name         = var.admin_db_passowrd_key_name
+  value        = random_password.db_admin_password.result
+  key_vault_id = data.azurerm_key_vault.infra_key_vault.id
 }
 
 provider "azurerm" {
