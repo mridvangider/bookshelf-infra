@@ -9,6 +9,18 @@ terraform {
   }
 }
 
+resource "random_password" "db_admin_password" {
+  length  = 16
+  special = true
+
+}
+
+output "db_admin_password" {
+  value       = random_password.db_admin_password
+  description = "Password of the db admin"
+  sensitive   = true
+}
+
 provider "azurerm" {
   features {}
 }
@@ -66,7 +78,7 @@ resource "azurerm_postgresql_flexible_server" "bookshelf_db_server" {
   private_dns_zone_id           = azurerm_private_dns_zone.bookshelf_dns_zone.id
   public_network_access_enabled = false
   administrator_login           = "bookshelf_db_admin"
-  administrator_password        = "bookshelf@12345"
+  administrator_password        = random_password.db_admin_password.result
   zone                          = "1"
 
   storage_mb   = 32768
