@@ -28,7 +28,7 @@ steps:
     environmentServiceNameAzureRM: 'TF Service Principal on Azure DevOps'
 - task: TerraformTask@5
   displayName: Run Terraform Apply
-  condition: and(succeeded(), eq(variables['terraformPlan.changesPresent'], 'true'))
+  condition: and(succeeded(), eq(variables['terraformPlan.changesPresent'], true))
   inputs:
     provider: 'azurerm'
     command: 'apply'
