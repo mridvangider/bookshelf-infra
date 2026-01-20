@@ -10,6 +10,7 @@ pool: default
 
 steps:
 - task: TerraformTask@5
+  name: TerraformInit
   displayName: Run Terraform Init
   inputs:
     provider: 'azurerm'
@@ -20,6 +21,7 @@ steps:
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'state.tfstate'
 - task: TerraformTask@5
+  name: terraformPlan
   displayName: Run Terraform Plan
   inputs:
     provider: 'azurerm'
@@ -27,8 +29,9 @@ steps:
     commandOptions: '-out tfplan'
     environmentServiceNameAzureRM: 'TF Service Principal on Azure DevOps'
 - task: TerraformTask@5
+  name: terraformApply
   displayName: Run Terraform Apply
-  condition: and(succeeded(), eq(variables['terraformPlan.changesPresent'], true))
+  # condition: and(succeeded(), eq(terraformPlan.changesPresent, true))
   inputs:
     provider: 'azurerm'
     command: 'apply'
