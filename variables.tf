@@ -51,3 +51,9 @@ variable "jwt_secret_key_name" {
   default     = "bookshelf-jwt-secret"
   description = "Name of the jwt secret key in the key vault"
 }
+
+variable "application_port" {
+  type        = number
+  default     = 80
+  description = "HTTP port for the tomcat server"
+}
