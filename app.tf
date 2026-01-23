@@ -18,6 +18,7 @@ resource "azurerm_linux_web_app" "bookshelf_app" {
       java_version        = "21"
       java_server_version = "java21"
     }
+    always_on = false
   }
 
   app_settings = {
