@@ -16,8 +16,38 @@ variable "infra_kv_name" {
   description = "Name of the infrastructure key vault"
 }
 
-variable "admin_db_passowrd_key_name" {
+variable "bookshelf_db_name" {
+  type        = string
+  default     = "bookshelf_db"
+  description = "Name of the bookshelf database"
+}
+
+variable "bookshelf_db_admin" {
+  type        = string
+  default     = "bookshelf_db_admin"
+  description = "Username for the bookshelf db admin"
+}
+
+variable "bookshelf_db_admin_password_key_name" {
   type        = string
   default     = "bookshelf-db-admin-password"
   description = "Name of the admin database password key in the key vault"
+}
+
+variable "bookshelf_db_svc_user" {
+  type        = string
+  default     = "svc_bookshelf"
+  description = "Name of the bookshelf database user"
+}
+
+variable "bookshelf_db_svc_password_key_name" {
+  type        = string
+  default     = "bookshelf-db-svc-password"
+  description = "Name of the bookshelf database service user password key in the key vault"
+}
+
+variable "jwt_secret_key_name" {
+  type        = string
+  default     = "bookshelf-jwt-secret"
+  description = "Name of the jwt secret key in the key vault"
 }
