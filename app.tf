@@ -42,7 +42,7 @@ resource "azurerm_linux_web_app" "bookshelf_app" {
   }
 
   identity {
-    identity_ids = [azurerm_user_assigned_identity.app_mi]
+    identity_ids = [azurerm_user_assigned_identity.app_mi.id]
     type         = "UserAssigned"
   }
 
