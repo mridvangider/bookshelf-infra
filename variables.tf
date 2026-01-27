@@ -40,18 +40,6 @@ variable "bookshelf_db_svc_user" {
   description = "Name of the bookshelf database user"
 }
 
-variable "bookshelf_db_svc_password_key_name" {
-  type        = string
-  default     = "bookshelf-db-svc-password"
-  description = "Name of the bookshelf database service user password key in the key vault"
-}
-
-variable "jwt_secret_key_name" {
-  type        = string
-  default     = "bookshelf-jwt-secret"
-  description = "Name of the jwt secret key in the key vault"
-}
-
 variable "application_port" {
   type        = number
   default     = 80
