@@ -14,8 +14,7 @@ resource "azurerm_linux_web_app" "bookshelf_app" {
 
   site_config {
     application_stack {
-      docker_registry_url = "https://mcr.microsoft.com"
-      docker_image_name   = "appsvc/staticsite:latest"
+      docker_image_name   = "mcr.microsoft.com/appsvc/staticsite:latest"
     }
     always_on                                     = false
     container_registry_use_managed_identity       = true
