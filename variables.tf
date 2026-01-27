@@ -57,3 +57,9 @@ variable "application_port" {
   default     = 80
   description = "HTTP port for the tomcat server"
 }
+
+variable "main_acr_name" {
+  type        = string
+  default     = "maincr"
+  description = "Name of the main container registry"
+}
