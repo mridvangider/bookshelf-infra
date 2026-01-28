@@ -1,0 +1,31 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  planFile: $(Build.SourceVersion).tfplan
+
+steps:
+  - task: TerraformInstaller@1
+    inputs:
+      terraformVersion: latest
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: "tf-sp-on-ado"
+      scriptType: bash
+      scriptLocation: scriptPath
+      addSpnToEnvironment: true
+      scriptPath: $(Build.SourcesDirectory)/make_env.sh
+    displayName: 'Set Environment Variables'
+  - bash: |
+      source build.env && terraform init
+    displayName: Terraform Init
+    name: terraformInit
+  - bash: |
+      source build.env && terraform destroy
+    displayName: Terraform Destroy
+    name: terraformDestroy
