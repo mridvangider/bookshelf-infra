@@ -43,7 +43,7 @@ steps:
       scriptLocation: inlineScript
       addSpnToEnvironment: true
       inlineScript: |
-        ./tf.sh plan
+        ./tf.sh plan -out $(planFile)
     displayName: Terraform Plan
     name: terraformPlan
   - task: AzureCLI@2
@@ -53,6 +53,6 @@ steps:
       scriptLocation: inlineScript
       addSpnToEnvironment: true
       inlineScript: |
-        ./tf.sh apply
+        ./tf.sh apply $(planFile)
     displayName: Terraform Apply
     name: terraformApply
