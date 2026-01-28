@@ -12,7 +12,7 @@ resource "azurerm_role_assignment" "bookshelf_cr_pull" {
 
 resource "azurerm_role_assignment" "bookshelf_cr_read" {
   scope                = data.azurerm_container_registry.main_acr.id
-  role_definition_name = "Reader"
+  role_definition_name = "Container Registry Repository Reader"
   principal_id         = azurerm_user_assigned_identity.app_mi.principal_id
 }
 
