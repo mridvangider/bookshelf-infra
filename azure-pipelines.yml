@@ -25,14 +25,14 @@ steps:
       scriptPath: $(Build.SourcesDirectory)/make_env.sh
     displayName: 'Set Environment Variables'
   - bash: |
-      source build.env && terraform init
+      $(Build.SourcesDirectory)/tf.sh init
     displayName: Terraform Init
     name: terraformInit
   - bash: |
-      source build.env && terraform plan -out $(planFile)
+      $(Build.SourcesDirectory)/tf.sh plan -out $(planFile)
     displayName: Terraform Plan
     name: terraformPlan
   - bash: |
-      source build.env && terraform apply $(planFile)
+      $(Build.SourcesDirectory)/tf.sh apply $(planFile)
     displayName: Terraform Apply
     name: terraformApply
