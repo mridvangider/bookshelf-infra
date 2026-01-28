@@ -14,5 +14,6 @@ then
   exit 1
 fi
 
-source $ENV_FILE
+ARM_SUBSCRIPTION_ID=$(az account show --query id --output tsv)
+export ARM_SUBSCRIPTION_ID
 terraform "$@"

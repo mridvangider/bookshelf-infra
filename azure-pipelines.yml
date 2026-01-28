@@ -53,6 +53,6 @@ steps:
       scriptLocation: inlineScript
       addSpnToEnvironment: true
       inlineScript: |
-        ./tf.sh plan
+        ./tf.sh apply
     displayName: Terraform Apply
     name: terraformApply
