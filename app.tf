@@ -14,7 +14,7 @@ resource "azurerm_linux_web_app" "bookshelf_app" {
 
   site_config {
     application_stack {
-      docker_image_name = "bookshelf:main"
+      docker_image_name   = "bookshelf:main"
       docker_registry_url = "https://${data.azurerm_container_registry.main_acr.login_server}"
     }
     always_on                                     = false
