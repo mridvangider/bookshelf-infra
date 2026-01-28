@@ -14,7 +14,7 @@ resource "azurerm_linux_web_app" "bookshelf_app" {
 
   site_config {
     application_stack {
-      docker_image_name = "${data.azurerm_container_registry.main_acr.login_server}/bookshelf:latest"
+      docker_image_name = "${data.azurerm_container_registry.main_acr.login_server}/bookshelf:main"
     }
     always_on                                     = false
     container_registry_use_managed_identity       = true
