@@ -1,3 +1,7 @@
+locals {
+  image_name = "${data.azurerm_container_registry.main_acr.login_server}/bookshelf:main"
+}
+
 resource "azurerm_service_plan" "bookshelf_svc_plan" {
   name                = "bookshelf-service-plan"
   location            = azurerm_resource_group.bookshelf.location
@@ -14,7 +18,7 @@ resource "azurerm_linux_web_app" "bookshelf_app" {
 
   site_config {
     application_stack {
-      docker_image_name = "${data.azurerm_container_registry.main_acr.login_server}/bookshelf:main"
+      docker_image_name = local.image_name
     }
     always_on                                     = false
     container_registry_use_managed_identity       = true
