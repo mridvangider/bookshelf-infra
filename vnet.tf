@@ -21,6 +21,40 @@ resource "azurerm_subnet" "bookshelf_db_subnet" {
   }
 }
 
+resource "azurerm_subnet" "bookshelf_app" {
+  name                 = "bookshelf-app-subnet"
+  resource_group_name  = azurerm_resource_group.bookshelf.name
+  virtual_network_name = azurerm_virtual_network.bookshelf_vnet.name
+  address_prefixes     = ["10.0.2.0/24"]
+}
+
+resource "azurerm_subnet" "bastion" {
+  name                 = "bookshelf-bastion-subnet"
+  resource_group_name  = azurerm_resource_group.bookshelf.name
+  virtual_network_name = azurerm_virtual_network.bookshelf_vnet.name
+  address_prefixes     = ["10.0.3.0/24"]
+}
+
+resource "azurerm_public_ip" "bastion" {
+  name                = "bookshelf-bastion-ip"
+  location            = azurerm_resource_group.bookshelf.location
+  resource_group_name = azurerm_resource_group.bookshelf
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+
+resource "azurerm_bastion_host" "bookshelf" {
+  location            = azurerm_resource_group.bookshelf.location
+  name                = "bookshelf-abastion"
+  resource_group_name = azurerm_resource_group.bookshelf.name
+
+  ip_configuration {
+    name                 = "ip-config"
+    public_ip_address_id = azurerm_public_ip.bastion.id
+    subnet_id            = azurerm_subnet.bastion.id
+  }
+}
+
 resource "azurerm_private_dns_zone" "bookshelf_dns_zone" {
   name                = "bookshelf.postgres.database.azure.com"
   resource_group_name = azurerm_resource_group.bookshelf.name
@@ -31,5 +65,5 @@ resource "azurerm_private_dns_zone_virtual_network_link" "bookshelf_dns_link" {
   private_dns_zone_name = azurerm_private_dns_zone.bookshelf_dns_zone.name
   resource_group_name   = azurerm_resource_group.bookshelf.name
   virtual_network_id    = azurerm_virtual_network.bookshelf_vnet.id
-  depends_on            = [azurerm_subnet.bookshelf_db_subnet]
+  depends_on            = [azurerm_subnet.bookshelf_db_subnet, azurerm_subnet.bookshelf_app]
 }

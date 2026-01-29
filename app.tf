@@ -7,10 +7,12 @@ resource "azurerm_service_plan" "bookshelf_svc_plan" {
 }
 
 resource "azurerm_linux_web_app" "bookshelf_app" {
-  name                = "bookshelf-app"
-  location            = azurerm_resource_group.bookshelf.location
-  resource_group_name = azurerm_resource_group.bookshelf.name
-  service_plan_id     = azurerm_service_plan.bookshelf_svc_plan.id
+  name                          = "bookshelf-app"
+  location                      = azurerm_resource_group.bookshelf.location
+  resource_group_name           = azurerm_resource_group.bookshelf.name
+  service_plan_id               = azurerm_service_plan.bookshelf_svc_plan.id
+  public_network_access_enabled = false
+  virtual_network_subnet_id     = azurerm_subnet.bookshelf_app.id
 
   site_config {
     application_stack {
