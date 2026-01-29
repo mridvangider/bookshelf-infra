@@ -29,7 +29,7 @@ resource "azurerm_subnet" "bookshelf_app" {
 }
 
 resource "azurerm_subnet" "bastion" {
-  name                 = "bookshelf-bastion-subnet"
+  name                 = "AzureBastionSubnet"
   resource_group_name  = azurerm_resource_group.bookshelf.name
   virtual_network_name = azurerm_virtual_network.bookshelf_vnet.name
   address_prefixes     = ["10.0.3.0/24"]
