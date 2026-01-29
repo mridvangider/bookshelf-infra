@@ -38,7 +38,7 @@ resource "azurerm_subnet" "bastion" {
 resource "azurerm_public_ip" "bastion" {
   name                = "bookshelf-bastion-ip"
   location            = azurerm_resource_group.bookshelf.location
-  resource_group_name = azurerm_resource_group.bookshelf
+  resource_group_name = azurerm_resource_group.bookshelf.name
   allocation_method   = "Static"
   sku                 = "Standard"
 }
