@@ -2,7 +2,7 @@ resource "azurerm_service_plan" "bookshelf_svc_plan" {
   name                = "bookshelf-service-plan"
   location            = azurerm_resource_group.bookshelf.location
   resource_group_name = azurerm_resource_group.bookshelf.name
-  sku_name            = "F1"
+  sku_name            = "B1"
   os_type             = "Linux"
 }
 
