@@ -34,6 +34,13 @@ resource "azurerm_subnet" "bookshelf_app" {
   }
 }
 
+resource "azurerm_subnet" "default" {
+  name = "default"
+  resource_group_name = azurerm_resource_group.bookshelf.name
+  virtual_network_name = azurerm_virtual_network.bookshelf_vnet.name
+  address_prefixes = ["10.0.0.0/24"]
+}
+
 resource "azurerm_subnet" "bastion" {
   name                 = "AzureBastionSubnet"
   resource_group_name  = azurerm_resource_group.bookshelf.name
@@ -66,10 +73,24 @@ resource "azurerm_private_dns_zone" "bookshelf_dns_zone" {
   resource_group_name = azurerm_resource_group.bookshelf.name
 }
 
+resource "azurerm_private_endpoint" "bookshelf_endpoint" {
+  location            = azurerm_resource_group.bookshelf.location
+  name                = "bookshelf_endpoint"
+  resource_group_name = azurerm_resource_group.bookshelf.name
+  subnet_id           = azurerm_subnet.default.id
+
+  private_service_connection {
+    name = "bookshelf-privateendpoint-connection"
+    is_manual_connection = false
+    private_connection_resource_id = azurerm_linux_web_app.bookshelf_app.id
+    subresource_names = ["sites"]
+  }
+}
+
 resource "azurerm_private_dns_zone_virtual_network_link" "bookshelf_dns_link" {
   name                  = "bookshelf-dns-link"
   private_dns_zone_name = azurerm_private_dns_zone.bookshelf_dns_zone.name
   resource_group_name   = azurerm_resource_group.bookshelf.name
   virtual_network_id    = azurerm_virtual_network.bookshelf_vnet.id
-  depends_on            = [azurerm_subnet.bookshelf_db_subnet, azurerm_subnet.bookshelf_app]
+  depends_on            = [azurerm_subnet.bookshelf_db_subnet, azurerm_subnet.bookshelf_app, azurerm_subnet.bastion, azurerm_subnet.default]
 }
