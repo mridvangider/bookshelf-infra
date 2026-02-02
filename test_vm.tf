@@ -18,7 +18,7 @@ resource "azurerm_linux_virtual_machine" "testvm" {
   admin_username        = "adminuser"
 
   admin_ssh_key {
-    public_key = file("~/.ssh/azure-vm.pem.pub")
+    public_key = data.azurerm_key_vault_secret.testvm_pk.value
     username   = "adminuser"
   }
 
