@@ -85,6 +85,11 @@ resource "azurerm_private_endpoint" "bookshelf_endpoint" {
     private_connection_resource_id = azurerm_linux_web_app.bookshelf_app.id
     subresource_names              = ["sites"]
   }
+
+  private_dns_zone_group {
+    name = "bookshelf-endpoint-dns"
+    private_dns_zone_ids = [azurerm_private_dns_zone.bookshelf_dns_zone.id]
+  }
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "bookshelf_dns_link" {
