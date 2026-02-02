@@ -68,8 +68,13 @@ resource "azurerm_bastion_host" "bookshelf" {
   }
 }
 
-resource "azurerm_private_dns_zone" "bookshelf_dns_zone" {
-  name                = "bookshelf.io"
+resource "azurerm_private_dns_zone" "bookshelf_db_dns_zone" {
+  name                = "bookshelf.postgres.database.azure.com"
+  resource_group_name = azurerm_resource_group.bookshelf.name
+}
+
+resource "azurerm_private_dns_zone" "bookshelf_app_dns_zone" {
+  name                = "azurewebsites.net"
   resource_group_name = azurerm_resource_group.bookshelf.name
 }
 
@@ -87,14 +92,22 @@ resource "azurerm_private_endpoint" "bookshelf_endpoint" {
   }
 
   private_dns_zone_group {
-    name = "bookshelf-endpoint-dns"
-    private_dns_zone_ids = [azurerm_private_dns_zone.bookshelf_dns_zone.id]
+    name                 = "bookshelf-endpoint-dns"
+    private_dns_zone_ids = [azurerm_private_dns_zone.bookshelf_app_dns_zone.id]
   }
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "bookshelf_dns_link" {
-  name                  = "bookshelf-dns-link"
-  private_dns_zone_name = azurerm_private_dns_zone.bookshelf_dns_zone.name
+resource "azurerm_private_dns_zone_virtual_network_link" "bookshelf_db_dns_link" {
+  name                  = "bookshelf-db-dns-link"
+  private_dns_zone_name = azurerm_private_dns_zone.bookshelf_db_dns_zone.name
+  resource_group_name   = azurerm_resource_group.bookshelf.name
+  virtual_network_id    = azurerm_virtual_network.bookshelf_vnet.id
+  depends_on            = [azurerm_subnet.bookshelf_db_subnet]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "bookshelf_app_dns_link" {
+  name                  = "bookshelf-app-dns-link"
+  private_dns_zone_name = azurerm_private_dns_zone.bookshelf_app_dns_zone.name
   resource_group_name   = azurerm_resource_group.bookshelf.name
   virtual_network_id    = azurerm_virtual_network.bookshelf_vnet.id
   depends_on            = [azurerm_subnet.bookshelf_db_subnet, azurerm_subnet.bookshelf_app, azurerm_subnet.bastion, azurerm_subnet.default]

@@ -4,7 +4,7 @@ resource "azurerm_postgresql_flexible_server" "bookshelf_db_server" {
   resource_group_name           = azurerm_resource_group.bookshelf.name
   version                       = "18"
   delegated_subnet_id           = azurerm_subnet.bookshelf_db_subnet.id
-  private_dns_zone_id           = azurerm_private_dns_zone.bookshelf_dns_zone.id
+  private_dns_zone_id           = azurerm_private_dns_zone.bookshelf_db_dns_zone.id
   public_network_access_enabled = false
   administrator_login           = var.bookshelf_db_admin
   administrator_password        = random_password.db_admin_password.result
@@ -14,7 +14,7 @@ resource "azurerm_postgresql_flexible_server" "bookshelf_db_server" {
   storage_tier = "P4"
 
   sku_name   = "B_Standard_B1ms"
-  depends_on = [azurerm_private_dns_zone_virtual_network_link.bookshelf_dns_link]
+  depends_on = [azurerm_private_dns_zone_virtual_network_link.bookshelf_db_dns_link]
 }
 
 resource "azurerm_postgresql_flexible_server_database" "bookshelf_db" {
@@ -29,5 +29,5 @@ resource "azurerm_private_dns_cname_record" "bookshelf_db_dns_record" {
   record              = azurerm_postgresql_flexible_server.bookshelf_db_server.fqdn
   resource_group_name = azurerm_resource_group.bookshelf.name
   ttl                 = 0
-  zone_name           = azurerm_private_dns_zone.bookshelf_dns_zone.name
+  zone_name           = azurerm_private_dns_zone.bookshelf_db_dns_zone.name
 }

@@ -38,16 +38,16 @@ resource "azurerm_linux_web_app" "bookshelf_app" {
 
 resource "azurerm_private_dns_a_record" "bookshelf_app_dns_a_record_main" {
   name                = "bookshelf-app.azurewebsites.net"
-  records = ["10.0.0.5"]
+  records             = ["10.0.0.5"]
   resource_group_name = azurerm_resource_group.bookshelf.name
   ttl                 = 0
-  zone_name           = azurerm_private_dns_zone.bookshelf_dns_zone.name
+  zone_name           = azurerm_private_dns_zone.bookshelf_app_dns_zone.name
 }
 
 resource "azurerm_private_dns_a_record" "bookshelf_app_dns_a_record_scm" {
   name                = "bookshelf-app.scm.azurewebsites.net"
-  records = ["10.0.0.5"]
+  records             = ["10.0.0.5"]
   resource_group_name = azurerm_resource_group.bookshelf.name
   ttl                 = 0
-  zone_name           = azurerm_private_dns_zone.bookshelf_dns_zone.name
+  zone_name           = azurerm_private_dns_zone.bookshelf_app_dns_zone.name
 }
