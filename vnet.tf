@@ -103,6 +103,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "bookshelf_db_dns_link"
   resource_group_name   = azurerm_resource_group.bookshelf.name
   virtual_network_id    = azurerm_virtual_network.bookshelf_vnet.id
   depends_on            = [azurerm_subnet.bookshelf_db_subnet]
+  registration_enabled = true
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "bookshelf_app_dns_link" {
