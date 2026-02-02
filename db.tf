@@ -23,3 +23,11 @@ resource "azurerm_postgresql_flexible_server_database" "bookshelf_db" {
   collation = "en_US.utf8"
   server_id = azurerm_postgresql_flexible_server.bookshelf_db_server.id
 }
+
+resource "azurerm_private_dns_cname_record" "bookshelf_db_dns_record" {
+  name                = "db.bookshelf.io"
+  record              = azurerm_postgresql_flexible_server.bookshelf_db_server.fqdn
+  resource_group_name = azurerm_resource_group.bookshelf.name
+  ttl                 = 0
+  zone_name           = azurerm_private_dns_zone.bookshelf_dns_zone.name
+}

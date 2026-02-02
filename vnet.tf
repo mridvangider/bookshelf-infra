@@ -69,7 +69,7 @@ resource "azurerm_bastion_host" "bookshelf" {
 }
 
 resource "azurerm_private_dns_zone" "bookshelf_dns_zone" {
-  name                = "bookshelf.postgres.database.azure.com"
+  name                = "bookshelf.io"
   resource_group_name = azurerm_resource_group.bookshelf.name
 }
 
