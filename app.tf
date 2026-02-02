@@ -30,8 +30,8 @@ resource "azurerm_linux_web_app" "bookshelf_app" {
   }
 
   app_settings = {
-    "KEYVAULT_URL"   = data.azurerm_key_vault.infra_key_vault.vault_uri
-    "BOOKSHELF_PORT" = tostring(var.application_port)
+    "KEYVAULT_URL"    = data.azurerm_key_vault.infra_key_vault.vault_uri
+    "BOOKSHELF_PORT"  = tostring(var.application_port)
     "AZURE_CLIENT_ID" = azurerm_user_assigned_identity.app_mi.client_id
   }
 }
