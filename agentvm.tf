@@ -1,6 +1,6 @@
 resource "azurerm_network_interface" "test_vm_nic" {
   location            = azurerm_resource_group.bookshelf.location
-  name                = "testvm-nic"
+  name                = "agentvm-nic"
   resource_group_name = azurerm_resource_group.bookshelf.name
 
   ip_configuration {
@@ -9,16 +9,16 @@ resource "azurerm_network_interface" "test_vm_nic" {
     private_ip_address_allocation = "Dynamic"
   }
 }
-resource "azurerm_linux_virtual_machine" "testvm" {
+resource "azurerm_linux_virtual_machine" "agentvm" {
   location              = azurerm_resource_group.bookshelf.location
-  name                  = "testvm"
+  name                  = "agentvm"
   network_interface_ids = [azurerm_network_interface.test_vm_nic.id]
   resource_group_name   = azurerm_resource_group.bookshelf.name
   size                  = "Standard_D2_v4"
   admin_username        = "adminuser"
 
   admin_ssh_key {
-    public_key = data.azurerm_key_vault_secret.testvm_pk.value
+    public_key = data.azurerm_key_vault_secret.agentvm_pk.value
     username   = "adminuser"
   }
 

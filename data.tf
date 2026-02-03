@@ -12,7 +12,7 @@ data "azurerm_container_registry" "main_acr" {
   resource_group_name = data.azurerm_resource_group.infra.name
 }
 
-data "azurerm_key_vault_secret" "testvm_pk" {
+data "azurerm_key_vault_secret" "agentvm_pk" {
   key_vault_id = data.azurerm_key_vault.infra_key_vault.id
-  name         = "testvm-pk"
+  name         = "agentvm-pk"
 }
