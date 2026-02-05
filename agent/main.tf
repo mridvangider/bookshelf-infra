@@ -64,7 +64,7 @@ resource "azurerm_virtual_machine_extension" "entra_login" {
   name                 = "entra-ssh-login"
   publisher            = "Microsoft.Azure.ActiveDirectory"
   type                 = "AADSSHLoginForLinux"
-  type_handler_version = "1.0.3307.1"
+  type_handler_version = "1.0"
   virtual_machine_id   = azurerm_linux_virtual_machine.agent.id
 }
 
