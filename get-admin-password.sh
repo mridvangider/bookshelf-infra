@@ -15,7 +15,18 @@ set -a
 set +a
 
 db_admin_password=$(az keyvault secret show --id "$ADMIN_PASSWORD_SECRET_ID" --query "value" --output tsv)
+if [ "$?" -ne "0" ] || [ -z "$db_admin_password" ]
+then
+  echo "Could not obtain admin password"
+  exit 1
+fi
+
 db_admin_password_version=$(az keyvault secret show --id "$ADMIN_PASSWORD_VERSIN_SECRET_ID" --query "value" --output tsv)
+if [ "$?" -ne "0" ] || [ -z "$db_admin_password_version" ]
+then
+  echo "Could not obtain admin password version"
+  exit 1
+fi
 
 
 cat >"$output_file" <<EOF
