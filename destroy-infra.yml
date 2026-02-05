@@ -17,16 +17,6 @@ steps:
     inputs:
       azureSubscription: "tf-sp-on-ado"
       scriptType: bash
-      scriptLocation: scriptPath
-      addSpnToEnvironment: true
-      scriptPath: $(Build.SourcesDirectory)/make_env.sh
-    displayName: 'Set Environment Variables'
-  - bash: |
-      cat env.rc
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: "tf-sp-on-ado"
-      scriptType: bash
       scriptLocation: inlineScript
       addSpnToEnvironment: true
       inlineScript: |

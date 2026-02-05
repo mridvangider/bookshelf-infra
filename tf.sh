@@ -1,13 +1,5 @@
 #!/bin/bash
 
-ENV_FILE=env.rc
-
-if [ ! -f "$ENV_FILE" ]
-then
-  echo "$ENV_FILE not found"
-  exit 1
-fi
-
 if [ "$(command -v terraform >/dev/null; echo $?)" -ne 0 ]
 then
   echo "terraform not available"

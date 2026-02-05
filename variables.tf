@@ -1,53 +1,48 @@
+variable "resource_group_name" {
+  type        = string
+  default     = "bookshelf"
+  description = "Name of the resource group"
+}
+
 variable "location" {
   type        = string
   default     = "switzerlandnorth"
-  description = "Location of the resources"
+  description = "Azure region to use for all the resources"
 }
 
-variable "infra_rg_name" {
+variable "db_entra_admin_object_id" {
   type        = string
-  default     = "infra"
-  description = "Name of the infrastructure resource group"
+  description = "Id of the Entra Principal for the DB adminstrator"
 }
 
-variable "infra_kv_name" {
+variable "db_entra_admin_name" {
   type        = string
-  default     = "rg-infra-key-vault"
-  description = "Name of the infrastructure key vault"
+  description = "Name of the Entra Principal for the DB adminstrator"
 }
 
-variable "bookshelf_db_name" {
+variable "db_entra_admin_type" {
   type        = string
-  default     = "bookshelf_db"
-  description = "Name of the bookshelf database"
+  description = "Type of the Entra Principal for the DB adminstrator"
 }
 
-variable "bookshelf_db_admin" {
+variable "db_admin_password" {
   type        = string
-  default     = "bookshelf_db_admin"
-  description = "Username for the bookshelf db admin"
+  description = "Password for the postgres administrator"
+  sensitive   = true
+  ephemeral   = true
 }
 
-variable "bookshelf_db_admin_password_key_name" {
-  type        = string
-  default     = "bookshelf-db-admin-password"
-  description = "Name of the admin database password key in the key vault"
-}
-
-variable "bookshelf_db_svc_user" {
-  type        = string
-  default     = "svc_bookshelf"
-  description = "Name of the bookshelf database user"
-}
-
-variable "application_port" {
+variable "db_admin_password_version" {
   type        = number
-  default     = 80
-  description = "HTTP port for the tomcat server"
+  description = "Version of the password for the postgres administrator"
 }
 
-variable "main_acr_name" {
+variable "deployment_principals_object_id" {
   type        = string
-  default     = "maincr"
-  description = "Name of the main container registry"
+  description = "Object id of the deployment principals group"
+}
+
+variable "bookshelf_db_admin_group_object_id" {
+  type        = string
+  description = "Object id of the bookshelf db admin group"
 }
