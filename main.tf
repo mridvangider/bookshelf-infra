@@ -13,7 +13,21 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 4.57.0"
     }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = ">= 3.7.0"
+    }
   }
+}
+
+provider "azurerm" {
+  features {}
+}
+
+data "azurerm_client_config" "current" {}
+
+provider "azuread" {
+  tenant_id = data.azurerm_client_config.current.tenant_id
 }
 
 module "network" {
