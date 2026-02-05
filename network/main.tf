@@ -40,7 +40,7 @@ resource "azurerm_subnet" "app" {
 }
 
 resource "azurerm_subnet" "db" {
-  name                 = "bookshelf-db-subnet"
+  name                 = "db"
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.bookshelf.name
   address_prefixes     = [var.db_subnet_ip_range]
