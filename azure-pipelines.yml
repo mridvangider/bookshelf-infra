@@ -14,9 +14,6 @@ variables:
     value: $(Build.SourceVersion).tfplan
   - name: adminVarsFile
     value: $(Build.SourcesDirectory)/pg_admin_pass.auto.tfvars
-  - group: bookshelf-db-admin-group-creds
-  - group: container
-  - group: postgres-admin-creds
 
 steps:
   - task: DownloadSecureFile@1
