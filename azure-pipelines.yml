@@ -26,9 +26,15 @@ steps:
     displayName: Download terraform.tfvars
     inputs:
       secureFile: "terraform.tfvars"
-  - task: Bash@3
+  - task: AzureCLI@2
+    name: downloadAdminPassword
+    displayName: Download Postgres Admin Password
     inputs:
-      filePath: $(Build.SourcesDirectory)/get-admin-password.sh
+      azureSubscription: "tf-sp-on-ado"
+      scriptType: bash
+      scriptLocation: scriptPath
+      scriptPath: $(Build.SourcesDirectory)/get-admin-password.sh
+      addSpnToEnvironment: true
       arguments: "$(adminVarsFile) $(downloadKeyVaultEnv.secureFilePath)"
   - task: TerraformInstaller@1
     inputs:
