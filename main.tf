@@ -31,7 +31,7 @@ module "agent" {
 
   agent_subnet_id                    = module.network.default_subnet_id
   agent_admin_pubkey_name            = "bookshelf-agent-admin"
-  bookshelf_db_admin_group_object_id = var.bookshelf_db_admin_group_object_id
+  bookshelf_db_admin_group_object_id = var.db_entra_admin_object_id
 }
 
 module "db" {

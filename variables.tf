@@ -41,8 +41,3 @@ variable "deployment_principals_object_id" {
   type        = string
   description = "Object id of the deployment principals group"
 }
-
-variable "bookshelf_db_admin_group_object_id" {
-  type        = string
-  description = "Object id of the bookshelf db admin group"
-}
