@@ -14,8 +14,8 @@ set -a
 . "$key_vault_env_file"
 set +a
 
-db_admin_password=$(az keyvault secret show --id "$ADMIN_PASSWORD_SECRET_ID")
-db_admin_password_version=$(az keyvault secret show --id "$ADMIN_PASSWORD_VERSIN_SECRET_ID")
+db_admin_password=$(az keyvault secret show --id "$ADMIN_PASSWORD_SECRET_ID" --query "value" --output tsv)
+db_admin_password_version=$(az keyvault secret show --id "$ADMIN_PASSWORD_VERSIN_SECRET_ID" --query "value" --output tsv)
 
 
 cat >"$output_file" <<EOF
