@@ -12,3 +12,4 @@ crash.log
 *.tfplan
 .terraform.tfstate.lock.info
 .vscode/
+*.tfvars
