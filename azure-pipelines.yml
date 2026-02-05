@@ -10,9 +10,29 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  planFile: $(Build.SourceVersion).tfplan
+  - name: planFile
+    value: $(Build.SourceVersion).tfplan
+  - name: adminVarsFile
+    value: $(Build.SourcesDirectory)/pg_admin_pass.auto.tfvars
+  - group: bookshelf-db-admin-group-creds
+  - group: container
+  - group: postgres-admin-creds
 
 steps:
+  - task: DownloadSecureFile@1
+    name: downloadKeyVaultEnv
+    displayName: Download keyvault.env
+    inputs:
+      secureFile: "keyvault.env"
+  - task: DownloadSecureFile@1
+    name: downloadTerraformVars
+    displayName: Download terraform.tfvars
+    inputs:
+      secureFile: "terraform.tfvars"
+  - task: Bash@3
+    inputs:
+      filePath: $(Build.SourcesDirectory)/get-admin-password.sh
+      arguments: "$(adminVarsFile) $(downloadKeyVaultEnv.secureFilePath)"
   - task: TerraformInstaller@1
     inputs:
       terraformVersion: latest
@@ -33,7 +53,7 @@ steps:
       scriptLocation: inlineScript
       addSpnToEnvironment: true
       inlineScript: |
-        ./tf.sh plan -out $(planFile)
+        ./tf.sh plan -out $(planFile) -var-file=$(adminVarsFile) -var-file=$(downloadTerraformVars.secureFilePath)
     displayName: Terraform Plan
     name: terraformPlan
   - task: AzureCLI@2
