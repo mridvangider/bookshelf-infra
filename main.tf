@@ -46,6 +46,8 @@ module "agent" {
   agent_subnet_id                    = module.network.default_subnet_id
   agent_admin_pubkey_name            = "bookshelf-agent-admin"
   bookshelf_db_admin_group_object_id = var.db_entra_admin_object_id
+
+  depends_on = [module.network]
 }
 
 module "db" {
@@ -62,6 +64,8 @@ module "db" {
   entra_admin_principal_type = var.db_entra_admin_type
   subnet_id                  = module.network.db_subnet_id
   vnet_id                    = module.network.vnet_id
+
+  depends_on = [module.agent]
 }
 
 module "web" {
@@ -74,4 +78,6 @@ module "web" {
   deployment_principals_object_id = var.deployment_principals_object_id
   app_subnet_name                 = module.network.app_subnet_id
   vnet_name                       = module.network.vnet_name
+
+  depends_on = [module.db]
 }
