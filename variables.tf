@@ -30,4 +30,5 @@ variable "deployment_principals_object_id" {
 variable "admin_pubkey_path" {
   type        = string
   description = "Path to the public key for admin user of agent"
+  default     = ""
 }
