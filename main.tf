@@ -43,8 +43,9 @@ module "agent" {
   resource_group_name = var.resource_group_name
   location            = var.location
 
-  agent_subnet_id         = module.network.default_subnet_id
-  agent_admin_pubkey_name = "bookshelf-agent-admin"
+  subnet_name       = module.network.default_subnet_name
+  vnet_name         = module.network.vnet_name
+  admin_pubkey_name = var.admin_pubkey_name
 
   depends_on = [module.network]
 }
@@ -58,8 +59,8 @@ module "db" {
 
   admin_password         = var.db_admin_password
   admin_password_version = var.db_admin_password_version
-  subnet_id              = module.network.db_subnet_id
-  vnet_id                = module.network.vnet_id
+  subnet_name            = module.network.db_subnet_name
+  vnet_name              = module.network.vnet_name
 
   depends_on = [module.agent]
 }
@@ -72,7 +73,8 @@ module "web" {
 
 
   deployment_principals_object_id = var.deployment_principals_object_id
-  app_subnet_name                 = module.network.app_subnet_id
+  app_subnet_name                 = module.network.app_subnet_name
+  endpoint_subnet_name            = module.network.default_subnet_name
   vnet_name                       = module.network.vnet_name
 
   depends_on = [module.db]

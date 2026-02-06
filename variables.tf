@@ -26,3 +26,8 @@ variable "deployment_principals_object_id" {
   type        = string
   description = "Object id of the deployment principals group"
 }
+
+variable "admin_pubkey_name" {
+  type        = string
+  description = "Name of the Azure SSH Key for agent admin"
+}

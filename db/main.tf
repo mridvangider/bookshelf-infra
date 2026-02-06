@@ -15,6 +15,17 @@ terraform {
 /*=============================*/
 /* Networking */
 /*=============================*/
+data "azurerm_virtual_network" "bookshelf" {
+  resource_group_name = var.resource_group_name
+  name                = var.vnet_name
+}
+
+data "azurerm_subnet" "db" {
+  resource_group_name  = var.resource_group_name
+  name                 = var.subnet_name
+  virtual_network_name = data.azurerm_virtual_network.bookshelf.name
+}
+
 resource "azurerm_private_dns_zone" "db" {
   name                = "bookshelf.postgres.database.azure.com"
   resource_group_name = var.resource_group_name
@@ -24,7 +35,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "db" {
   name                  = "bookshelf-db-dns-link"
   private_dns_zone_name = azurerm_private_dns_zone.db.name
   resource_group_name   = var.resource_group_name
-  virtual_network_id    = var.vnet_id
+  virtual_network_id    = data.azurerm_virtual_network.bookshelf.id
   registration_enabled  = true
 }
 
@@ -36,7 +47,7 @@ resource "azurerm_postgresql_flexible_server" "bookshelf" {
   name                              = "bookshelf-db-server"
   resource_group_name               = var.resource_group_name
   version                           = var.pg_version
-  delegated_subnet_id               = var.subnet_id
+  delegated_subnet_id               = data.azurerm_subnet.db.id
   private_dns_zone_id               = azurerm_private_dns_zone.db.id
   public_network_access_enabled     = false
   zone                              = "1"

@@ -10,14 +10,14 @@ variable "location" {
   description = "Azure region to use for all the resources"
 }
 
-variable "subnet_id" {
+variable "subnet_name" {
   type        = string
-  description = "Id of the subnet to host Azure Postgres Flexible servers"
+  description = "Name of the subnet to host Azure Postgres Flexible servers"
 }
 
-variable "vnet_id" {
+variable "vnet_name" {
   type        = string
-  description = "Id of the virtual network to host Azure Postgres Flexible servers"
+  description = "Name of the virtual network to host Azure Postgres Flexible servers"
 }
 
 variable "admin_password" {

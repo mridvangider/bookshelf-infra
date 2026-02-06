@@ -10,24 +10,29 @@ variable "location" {
   description = "Azure region to use for all the resources"
 }
 
-variable "agent_admin_user" {
+variable "admin_user" {
   type        = string
   default     = "azureuser"
-  description = "Name of the agent user"
+  description = "Name of the admin user"
 }
 
-variable "agent_subnet_id" {
+variable "subnet_name" {
   type        = string
-  description = "Id of the subnet to host the agent"
+  description = "Name of the subnet to host the agent"
 }
 
-variable "agent_vm_size" {
+variable "vnet_name" {
+  type        = string
+  description = "Name of the virtual network where the subnet is located"
+}
+
+variable "vm_size" {
   type        = string
   default     = "Standard_B1ms"
   description = "Size of the agent vm"
 }
 
-variable "agent_admin_pubkey_name" {
+variable "admin_pubkey_name" {
   type        = string
   description = "Name of public key for admin user of agent"
 }

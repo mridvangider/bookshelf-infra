@@ -10,7 +10,13 @@ terraform {
 
 data "azurerm_ssh_public_key" "admin" {
   resource_group_name = var.resource_group_name
-  name                = var.agent_admin_pubkey_name
+  name                = var.admin_pubkey_name
+}
+
+data "azurerm_subnet" "agent" {
+  resource_group_name  = var.resource_group_name
+  name                 = var.subnet_name
+  virtual_network_name = var.vnet_name
 }
 
 resource "azurerm_network_interface" "agent" {
@@ -20,7 +26,7 @@ resource "azurerm_network_interface" "agent" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = var.agent_subnet_id
+    subnet_id                     = data.azurerm_subnet.agent.id
     private_ip_address_allocation = "Dynamic"
   }
 }
@@ -30,12 +36,12 @@ resource "azurerm_linux_virtual_machine" "agent" {
   name                  = "agentvm"
   network_interface_ids = [azurerm_network_interface.agent.id]
   resource_group_name   = var.resource_group_name
-  size                  = var.agent_vm_size
-  admin_username        = var.agent_admin_user
+  size                  = var.vm_size
+  admin_username        = var.admin_user
 
   admin_ssh_key {
     public_key = data.azurerm_ssh_public_key.admin.public_key
-    username   = var.agent_admin_user
+    username   = var.admin_user
   }
 
   os_disk {
