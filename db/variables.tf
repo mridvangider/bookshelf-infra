@@ -37,21 +37,6 @@ variable "admin_username" {
   default     = "bookshelf_db_admin"
 }
 
-variable "entra_admin_principal_type" {
-  type        = string
-  description = "Type of the entra admin principal"
-}
-
-variable "entra_admin_object_id" {
-  type        = string
-  description = "Id of the entra admin principal"
-}
-
-variable "entra_admin_name" {
-  type        = string
-  description = "Name of the entra admin principal"
-}
-
 variable "db_name" {
   type        = string
   default     = "bookshelf_db"

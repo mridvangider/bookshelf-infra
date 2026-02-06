@@ -10,21 +10,6 @@ variable "location" {
   description = "Azure region to use for all the resources"
 }
 
-variable "db_entra_admin_object_id" {
-  type        = string
-  description = "Id of the Entra Principal for the DB adminstrator"
-}
-
-variable "db_entra_admin_name" {
-  type        = string
-  description = "Name of the Entra Principal for the DB adminstrator"
-}
-
-variable "db_entra_admin_type" {
-  type        = string
-  description = "Type of the Entra Principal for the DB adminstrator"
-}
-
 variable "db_admin_password" {
   type        = string
   description = "Password for the postgres administrator"

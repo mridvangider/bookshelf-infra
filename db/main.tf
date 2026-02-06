@@ -12,8 +12,6 @@ terraform {
   }
 }
 
-data "azurerm_client_config" "current" {}
-
 /*=============================*/
 /* Networking */
 /*=============================*/
@@ -47,9 +45,7 @@ resource "azurerm_postgresql_flexible_server" "bookshelf" {
   administrator_password_wo_version = var.admin_password_version
 
   authentication {
-    active_directory_auth_enabled = true
-    password_auth_enabled         = true
-    tenant_id                     = data.azurerm_client_config.current.tenant_id
+    password_auth_enabled = true
   }
 
   storage_mb   = 32768
@@ -64,13 +60,4 @@ resource "azurerm_postgresql_flexible_server_database" "bookshelf" {
   charset   = "UTF8"
   collation = "en_US.utf8"
   server_id = azurerm_postgresql_flexible_server.bookshelf.id
-}
-
-resource "azurerm_postgresql_flexible_server_active_directory_administrator" "bookshelf" {
-  object_id           = var.entra_admin_object_id
-  principal_name      = var.entra_admin_name
-  principal_type      = var.entra_admin_principal_type
-  resource_group_name = var.resource_group_name
-  server_name         = azurerm_postgresql_flexible_server.bookshelf.name
-  tenant_id           = data.azurerm_client_config.current.tenant_id
 }

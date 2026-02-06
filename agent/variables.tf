@@ -31,8 +31,3 @@ variable "agent_admin_pubkey_name" {
   type        = string
   description = "Name of public key for admin user of agent"
 }
-
-variable "bookshelf_db_admin_group_object_id" {
-  type        = string
-  description = "Object id of the bookshelf db admin group"
-}

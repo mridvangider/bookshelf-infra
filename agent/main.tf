@@ -5,10 +5,6 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 4.57.0"
     }
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = ">= 3.7.0"
-    }
   }
 }
 
@@ -42,10 +38,6 @@ resource "azurerm_linux_virtual_machine" "agent" {
     username   = var.agent_admin_user
   }
 
-  identity {
-    type = "SystemAssigned"
-  }
-
   os_disk {
     name                 = "myOsDisk"
     caching              = "ReadWrite"
@@ -58,22 +50,4 @@ resource "azurerm_linux_virtual_machine" "agent" {
     sku       = "13-gen2"
     version   = "0.20260129.2372"
   }
-}
-
-resource "azurerm_virtual_machine_extension" "entra_login" {
-  name                 = "entra-ssh-login"
-  publisher            = "Microsoft.Azure.ActiveDirectory"
-  type                 = "AADSSHLoginForLinux"
-  type_handler_version = "1.0"
-  virtual_machine_id   = azurerm_linux_virtual_machine.agent.id
-}
-
-data "azuread_group" "bookshelf_db_admins" {
-  object_id        = var.bookshelf_db_admin_group_object_id
-  security_enabled = true
-}
-
-resource "azuread_group_member" "agent_db_admin" {
-  group_object_id  = data.azuread_group.bookshelf_db_admins.object_id
-  member_object_id = azurerm_linux_virtual_machine.agent.identity[0].principal_id
 }
