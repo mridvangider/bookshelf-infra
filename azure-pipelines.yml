@@ -31,7 +31,7 @@ steps:
       scriptLocation: inlineScript
       addSpnToEnvironment: true
       inlineScript: |
-        az sshkey show --name $(bookshelf_agent_admin_ssh_pubkey_name) --resource-group $(admin_resource_group_name) --query "publicKey" -o tsv > agent.pub
+        az sshkey show --name $(bookshelf_agent_admin_ssh_pubkey_name) --resource-group $(bookshelf_agent_admin_ssh_pubkey_rg) --query "publicKey" -o tsv > agent.pub
   - task: AzureCLI@2
     name: downloadAdminPassword
     displayName: Download Postgres Admin Password
