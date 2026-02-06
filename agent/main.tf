@@ -5,12 +5,15 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 4.57.0"
     }
+    local = {
+      source  = "hashicorp/local"
+      version = ">= 2.6.0"
+    }
   }
 }
 
-data "azurerm_ssh_public_key" "admin" {
-  resource_group_name = var.resource_group_name
-  name                = var.admin_pubkey_name
+data "local_file" "agent_pubkey" {
+  filename = var.admin_pubkey_path
 }
 
 data "azurerm_subnet" "agent" {
@@ -40,7 +43,7 @@ resource "azurerm_linux_virtual_machine" "agent" {
   admin_username        = var.admin_user
 
   admin_ssh_key {
-    public_key = data.azurerm_ssh_public_key.admin.public_key
+    public_key = data.local_file.agent_pubkey.content
     username   = var.admin_user
   }
 

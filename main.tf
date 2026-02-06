@@ -17,6 +17,10 @@ terraform {
       source  = "hashicorp/azuread"
       version = ">= 3.7.0"
     }
+    local = {
+      source  = "hashicorp/local"
+      version = ">= 2.6.0"
+    }
   }
 }
 
@@ -24,7 +28,13 @@ provider "azurerm" {
   features {}
 }
 
+provider "local" {}
+
 data "azurerm_client_config" "current" {}
+
+locals {
+  admin_pubkey_path = var.admin_pubkey_path == "" ? "${path.root}/agent.pub" : var.admin_pubkey_path
+}
 
 provider "azuread" {
   tenant_id = data.azurerm_client_config.current.tenant_id
@@ -45,7 +55,7 @@ module "agent" {
 
   subnet_name       = module.network.default_subnet_name
   vnet_name         = module.network.vnet_name
-  admin_pubkey_name = var.admin_pubkey_name
+  admin_pubkey_path = local.admin_pubkey_path
 
   depends_on = [module.network]
 }

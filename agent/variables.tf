@@ -32,7 +32,7 @@ variable "vm_size" {
   description = "Size of the agent vm"
 }
 
-variable "admin_pubkey_name" {
+variable "admin_pubkey_path" {
   type        = string
-  description = "Name of public key for admin user of agent"
+  description = "Path to the public key for admin user of agent"
 }

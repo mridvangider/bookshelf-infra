@@ -14,6 +14,7 @@ variables:
     value: $(Build.SourceVersion).tfplan
   - name: adminVarsFile
     value: $(Build.SourcesDirectory)/pg_admin_pass.auto.tfvars
+  - group: admin
 
 steps:
   - task: DownloadSecureFile@1
@@ -21,11 +22,16 @@ steps:
     displayName: Download keyvault.env
     inputs:
       secureFile: "keyvault.env"
-  - task: DownloadSecureFile@1
-    name: downloadTerraformVars
-    displayName: Download terraform.tfvars
+  - task: AzureCLI@1
+    name: downloadAgentPubKey
+    displayName: Download agent public key
     inputs:
-      secureFile: "terraform.tfvars"
+      azureSubscription: "tf-sp-on-ado"
+      scriptType: bash
+      scriptLocation: inlineScript
+      addSpnToEnvironment: true
+      inlineScript: |
+        az sshkey show --name $(bookshelf_agent_admin_ssh_pubkey_name) --resource-group $(admin_resource_group_name) --query "publicKey" -o tsv > agent.pub
   - task: AzureCLI@2
     name: downloadAdminPassword
     displayName: Download Postgres Admin Password
@@ -56,7 +62,7 @@ steps:
       scriptLocation: inlineScript
       addSpnToEnvironment: true
       inlineScript: |
-        ./tf.sh plan -out $(planFile) -var-file=$(adminVarsFile) -var-file=$(downloadTerraformVars.secureFilePath)
+        ./tf.sh plan -out $(planFile) -var-file=$(adminVarsFile) -var "deployment_principals_object_id=$(deployment_principals_object_id)"
     displayName: Terraform Plan
     name: terraformPlan
   - task: AzureCLI@2
