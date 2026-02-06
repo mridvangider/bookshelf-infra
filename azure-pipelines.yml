@@ -22,7 +22,7 @@ steps:
     displayName: Download keyvault.env
     inputs:
       secureFile: "keyvault.env"
-  - task: AzureCLI@1
+  - task: AzureCLI@2
     name: downloadAgentPubKey
     displayName: Download agent public key
     inputs:
